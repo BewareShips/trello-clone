@@ -1,14 +1,27 @@
 import React, { FC } from "react";
+import { AddNewItem } from "./AddNewItem";
+import { Column } from "./Column";
+import { addList } from "./state/actions";
+import { useAppState } from "./state/AppStateContext";
 import { AppContainer } from "./styles";
 
 type Props = {
    children?: React.ReactNode;
 };
 
-export const App: FC<Props> = ({ children }) => {
+export const App: FC<Props> = () => {
+   const {lists,dispatch} = useAppState()
+   console.log(lists,"list")
    return (
       <AppContainer>
-         {children}
+         {lists.map((list)=>(
+            <Column text={list.text} key={list.id} id={list.id}/>
+         ))}
+        
+         <AddNewItem
+            onAdd={text => dispatch(addList(text))}
+            toggleButtonText="+ Add another list"
+         />
       </AppContainer>
    );
 };
