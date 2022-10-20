@@ -11,7 +11,6 @@ type Props = {
 
 export const App: FC<Props> = () => {
    const {lists,dispatch} = useAppState()
-   console.log(lists,"list")
    return (
       <AppContainer>
          {lists.map((list)=>(
