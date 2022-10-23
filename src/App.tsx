@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { AddNewItem } from "./AddNewItem";
 import { Column } from "./Column";
+import { CustomDragLayer } from "./CustomDragLayer";
 import { addList } from "./state/actions";
 import { useAppState } from "./state/AppStateContext";
 import { AppContainer } from "./styles";
@@ -10,9 +11,11 @@ type Props = {
 };
 
 export const App: FC<Props> = () => {
+   
    const {lists,dispatch} = useAppState()
    return (
       <AppContainer>
+         <CustomDragLayer />
          {lists.map((list)=>(
             <Column text={list.text} key={list.id} id={list.id}/>
          ))}

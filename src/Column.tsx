@@ -6,40 +6,43 @@ import { Card } from "./Card";
 import { moveList, addTask } from "./state/actions";
 import { useDrop } from "react-dnd";
 import { useItemDrag } from "./utils/useItemDrag";
-import { isHidden } from "./utils/isHidden"
+import { isHidden } from "./utils/isHidden";
 
 type ColumnProps = {
    text: string;
    id: string;
+   isPreview?: boolean;
    //children?: React.ReactNode;
 };
-export const Column: FC<ColumnProps> = ({ text, id }) => {
+export const Column: FC<ColumnProps> = ({ text, id, isPreview }) => {
    const { draggedItem, getTasksByListId, dispatch } = useAppState();
    const tasks = getTasksByListId(id);
    const ref = useRef<HTMLDivElement>(null);
-   const [, drop] = useDrop({ 
+   const [, drop] = useDrop({
       accept: "COLUMN",
-      hover(){
-         if(!draggedItem){
-            return
+      hover() {
+         if (!draggedItem) {
+            return;
          }
-         if(draggedItem.type ==="COLUMN"){
-            if(draggedItem.id === id){
-               return
+         if (draggedItem.type === "COLUMN") {
+            if (draggedItem.id === id) {
+               return;
             }
          }
-         dispatch(moveList(draggedItem.id,id))
-         
+         dispatch(moveList(draggedItem.id, id));
       },
-      drop:(item:any)=>{
-         console.log(item,'dropping');
-         
-      }
+      drop: (item: any) => {
+         console.log(item, "dropping");
+      },
    });
    const { drag } = useItemDrag({ id, text, type: "COLUMN" });
    drag(drop(ref));
    return (
-      <ColumnContainer ref={ref} isHidden={isHidden(draggedItem,"COLUMN",id)}>
+      <ColumnContainer
+         ref={ref}
+         isHidden={isHidden(draggedItem, "COLUMN", id,isPreview)}
+         isPreview={isPreview}
+      >
          <ColumnTitle>{text}</ColumnTitle>
          {tasks.map((task) => (
             <Card text={task.text} key={task.id} id={task.id} />

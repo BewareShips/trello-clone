@@ -21,7 +21,17 @@ interface DraggedItemAction {
   payload: DragItem | null;
 }
 
-export type Action = AddListAction | AddTaskAction | MoveListAction | DraggedItemAction;
+interface MoveTaskAction {
+  type:"MOVE_TASK";
+  payload:{
+    draggedItemId:string;
+    hoveredItemId:string|null;
+    sourceColumnId: string;
+    targetColumnId:string;
+  }
+}
+
+export type Action = AddListAction | AddTaskAction | MoveListAction | DraggedItemAction |MoveTaskAction;
 
 export const addTask = (text: string, listId: string,): Action => ({
   type: "ADD_TASK",
